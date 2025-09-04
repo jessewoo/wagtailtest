@@ -13,6 +13,7 @@ from wagtail.snippets.models import register_snippet
 
 from slugify import slugify
 
+from wagtail.search import index
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
@@ -41,10 +42,10 @@ class BlogPage(Page):
 
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.slug:
+    #         self.slug = slugify(self.title)
+    #     super().save(*args, **kwargs)
 
     # Add the main_image method:
     def main_image(self):
@@ -62,6 +63,11 @@ class BlogPage(Page):
         ], 
         heading="Blog information"),
         "intro", "body", "gallery_images"
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField('intro'),
+        index.SearchField('body'),
     ]
 
 

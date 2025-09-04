@@ -25,9 +25,11 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     "base",
+    "portfolio",
     "blog",
     "home",
     "search",
+    "dashboard",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -164,7 +166,7 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "mysite"
+WAGTAIL_SITE_NAME = "My First Site"
 
 # Search
 # https://docs.wagtail.org/en/stable/topics/search/backends.html
