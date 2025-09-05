@@ -15,6 +15,15 @@ from slugify import slugify
 
 from wagtail.search import index
 
+from wagtail.api import APIField
+from rest_framework.fields import DateField, CharField
+from wagtail.rich_text import expand_db_html
+
+class RichTextSerializer(CharField):
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        return expand_db_html(representation)
+
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
     def get_context(self, request):
@@ -42,11 +51,6 @@ class BlogPage(Page):
 
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
 
-    # def save(self, *args, **kwargs):
-    #     if not self.slug:
-    #         self.slug = slugify(self.title)
-    #     super().save(*args, **kwargs)
-
     # Add the main_image method:
     def main_image(self):
         gallery_item = self.gallery_images.first()
@@ -70,6 +74,16 @@ class BlogPage(Page):
         index.SearchField('body'),
     ]
 
+    # Export fields over the API
+    api_fields = [
+        APIField('intro'),
+        APIField('date'),
+        APIField('date_display', serializer=DateField(format='%A %d %B %Y', source='date')),
+        APIField('body', serializer=RichTextSerializer()),
+        APIField('intro'),
+        APIField('authors'),
+    ]
+
 
 class BlogPageGalleryImage(Orderable):
     page = ParentalKey(BlogPage, on_delete=models.CASCADE, related_name='gallery_images')
@@ -91,10 +105,14 @@ class Author(models.Model):
     panels = ["name", "author_image"]
 
     def __str__(self):
-        return self.name
+        return self.name 
 
     class Meta:
         verbose_name_plural = 'Authors'
+
+    api_fields = [
+        APIField('name'),
+    ]
 
 class BlogTagIndexPage(Page):
     def get_context(self, request):

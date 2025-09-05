@@ -28,6 +28,8 @@ from wagtail.contrib.settings.models import (
 
 from wagtail.snippets.models import register_snippet
 
+from wagtail.api import APIField
+
 @register_setting
 class NavigationSettings(BaseGenericSetting):
     linkedin_url = models.URLField(verbose_name="LinkedIn URL", blank=True)
@@ -94,4 +96,8 @@ class FormPage(AbstractEmailForm):
             ]),
             FieldPanel('subject'),
         ], "Email"),
+    ]
+
+    api_fields = [
+        APIField('form_fields'),
     ]
