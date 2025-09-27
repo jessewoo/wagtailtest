@@ -10,7 +10,6 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from rest_framework import serializers
 
-
 # Department snippet for organizing team members
 @register_snippet
 class Department(models.Model):
@@ -229,5 +228,6 @@ class TeamPage(Page):
     
     def get_team_members_for_api(self, obj):
         """Custom serializer method for API"""
+        from .serializers import TeamMemberSerializer
         team_members = obj.get_team_members()
         return TeamMemberSerializer(team_members, many=True, context={'request': self.context.get('request')}).data

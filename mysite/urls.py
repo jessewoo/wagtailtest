@@ -13,6 +13,8 @@ from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.documents.api.v2.views import DocumentsAPIViewSet
 
+from debug_toolbar.toolbar import debug_toolbar_urls
+
 # Create the router
 api_router = WagtailAPIRouter('wagtailapi')
 
@@ -23,14 +25,16 @@ api_router.register_endpoint('documents', DocumentsAPIViewSet)
 
 
 urlpatterns = [
+    path('blog/', include('blog.urls')),  # Include blog API urls
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path('api/v2/', api_router.urls),
     path('', include('team.urls')),  # Include team API URLs
+    
     re_path(r'^', include(wagtail_urls)),
-]
+] + debug_toolbar_urls()
 
 
 if settings.DEBUG:
