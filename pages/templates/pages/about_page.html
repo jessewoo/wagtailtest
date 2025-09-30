@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-aboutpage{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.intro %}
+            <div class="intro">
+                {{ page.intro|richtext }}
+            </div>
+        {% endif %}
+
+        {% if page.mission or page.vision %}
+            <div class="mission-vision">
+                {% if page.mission %}
+                    <div class="mission">
+                        <h2>Our Mission</h2>
+                        {{ page.mission|richtext }}
+                    </div>
+                {% endif %}
+
+                {% if page.vision %}
+                    <div class="vision">
+                        <h2>Our Vision</h2>
+                        {{ page.vision|richtext }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if page.body %}
+            <div class="content">
+                {{ page.body|richtext }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

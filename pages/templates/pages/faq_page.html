@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-faqpage{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.intro %}
+            <div class="intro">
+                {{ page.intro|richtext }}
+            </div>
+        {% endif %}
+
+        <div class="faq-list">
+            {% for item in page.faq_items.all %}
+                <div class="faq-item">
+                    <h2 class="question">{{ item.question }}</h2>
+                    <div class="answer">
+                        {{ item.answer|richtext }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

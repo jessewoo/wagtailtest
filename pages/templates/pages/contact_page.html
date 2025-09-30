@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-contactpage{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.body %}
+            <div class="intro">
+                {{ page.body|richtext }}
+            </div>
+        {% endif %}
+
+        <div class="contact-info">
+            {% if page.phone or page.email or page.address %}
+                <div class="contact-details">
+                    <h2>Contact Information</h2>
+                    {% if page.phone %}
+                        <p><strong>Phone:</strong> <a href="tel:{{ page.phone }}">{{ page.phone }}</a></p>
+                    {% endif %}
+                    {% if page.email %}
+                        <p><strong>Email:</strong> <a href="mailto:{{ page.email }}">{{ page.email }}</a></p>
+                    {% endif %}
+                    {% if page.address %}
+                        <p><strong>Address:</strong><br>{{ page.address|linebreaks }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if page.facebook_url or page.twitter_url or page.linkedin_url or page.instagram_url %}
+                <div class="social-media">
+                    <h2>Follow Us</h2>
+                    <ul class="social-links">
+                        {% if page.facebook_url %}
+                            <li><a href="{{ page.facebook_url }}" target="_blank" rel="noopener">Facebook</a></li>
+                        {% endif %}
+                        {% if page.twitter_url %}
+                            <li><a href="{{ page.twitter_url }}" target="_blank" rel="noopener">Twitter/X</a></li>
+                        {% endif %}
+                        {% if page.linkedin_url %}
+                            <li><a href="{{ page.linkedin_url }}" target="_blank" rel="noopener">LinkedIn</a></li>
+                        {% endif %}
+                        {% if page.instagram_url %}
+                            <li><a href="{{ page.instagram_url }}" target="_blank" rel="noopener">Instagram</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

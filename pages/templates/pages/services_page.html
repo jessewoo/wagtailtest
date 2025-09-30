@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-servicespage{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.intro %}
+            <div class="intro">
+                {{ page.intro|richtext }}
+            </div>
+        {% endif %}
+
+        <div class="services-list">
+            {% for service in page.get_children.live %}
+                <div class="service-item">
+                    <h2><a href="{% pageurl service %}">{{ service.title }}</a></h2>
+                    {% if service.specific.description %}
+                        <div class="service-description">
+                            {{ service.specific.description|richtext|truncatewords_html:30 }}
+                        </div>
+                    {% endif %}
+                    <a href="{% pageurl service %}" class="read-more">Learn More →</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

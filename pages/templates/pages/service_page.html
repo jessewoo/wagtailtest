@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-servicepage{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.description %}
+            <div class="description">
+                {{ page.description|richtext }}
+            </div>
+        {% endif %}
+
+        {% if page.features %}
+            <div class="features">
+                <h2>Features & Benefits</h2>
+                {{ page.features|richtext }}
+            </div>
+        {% endif %}
+
+        {% if page.pricing_info %}
+            <div class="pricing">
+                <h2>Pricing</h2>
+                <p>{{ page.pricing_info }}</p>
+            </div>
+        {% endif %}
+
+        <div class="back-link">
+            <a href="{{ page.get_parent.url }}">← Back to Services</a>
+        </div>
+    </div>
+{% endblock content %}

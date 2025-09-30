@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "search",
     "dashboard",
     "team",
+    "pages",
     'wagtail.api.v2',
     'rest_framework',
     "wagtail.contrib.forms",

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-flexiblepage{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.subtitle %}
+            <p class="subtitle">{{ page.subtitle }}</p>
+        {% endif %}
+
+        <div class="flexible-content">
+            {% for block in page.body %}
+                {% if block.block_type == 'heading' %}
+                    <h2>{{ block.value }}</h2>
+
+                {% elif block.block_type == 'paragraph' %}
+                    <div class="paragraph">
+                        {{ block.value|richtext }}
+                    </div>
+
+                {% elif block.block_type == 'image' %}
+                    {% image block.value fill-1200x600 as img %}
+                    <figure>
+                        <img src="{{ img.url }}" alt="{{ block.value.title }}">
+                        {% if block.value.title %}
+                            <figcaption>{{ block.value.title }}</figcaption>
+                        {% endif %}
+                    </figure>
+
+                {% elif block.block_type == 'embed' %}
+                    <div class="embed">
+                        {{ block.value }}
+                    </div>
+
+                {% elif block.block_type == 'document' %}
+                    <div class="document">
+                        <a href="{{ block.value.url }}">{{ block.value.title }}</a>
+                    </div>
+
+                {% elif block.block_type == 'call_to_action' %}
+                    <div class="cta">
+                        <h3>{{ block.value.title }}</h3>
+                        {{ block.value.text|richtext }}
+                        {% if block.value.button_page %}
+                            <a href="{% pageurl block.value.button_page %}" class="button">{{ block.value.button_text }}</a>
+                        {% elif block.value.button_link %}
+                            <a href="{{ block.value.button_link }}" class="button">{{ block.value.button_text }}</a>
+                        {% endif %}
+                    </div>
+
+                {% elif block.block_type == 'quote' %}
+                    <blockquote class="quote">
+                        <p>{{ block.value.text }}</p>
+                        {% if block.value.author %}
+                            <cite>
+                                {{ block.value.author }}
+                                {% if block.value.author_title %}, {{ block.value.author_title }}{% endif %}
+                            </cite>
+                        {% endif %}
+                    </blockquote>
+
+                {% elif block.block_type == 'columns' %}
+                    <div class="columns">
+                        {% for column in block.value.columns %}
+                            <div class="column">
+                                {% if column.heading %}
+                                    <h3>{{ column.heading }}</h3>
+                                {% endif %}
+                                {{ column.content|richtext }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                {% elif block.block_type == 'anchor' %}
+                    <div id="{{ block.value }}"></div>
+
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
